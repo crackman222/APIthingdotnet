@@ -1,11 +1,10 @@
-namespace TryConsoleApp.Models
+// Models/FMC650Data.cs
+namespace API_dotnet.Models
 {
     public class FMC650Data
     {
-        // Tambahkan baris ini:
-        public int Id { get; set; }
-
-        public string? DeviceId { get; set; }
+        public int Id { get; set; } // Pastikan properti ini ada dan public
+        public string? DeviceId { get; set; } // '?' untuk nullable string
         public DateTime Timestamp { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }

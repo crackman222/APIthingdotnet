@@ -1,0 +1,110 @@
+# Visual Studio 2022
+.vs/
+[Dd]ebug/
+[Rr]elease/
+*.sln.docstates
+*.vsp
+*.suo
+*.user
+*.userosscache
+*.compile
+*.opendb
+*.VC.opendb
+*.sdf
+*.jfm
+*.pfx
+*.resharper
+*.dotSettings
+*.pidb
+*.booproj
+*.msbuildproj
+*.testrunconfig
+*.trx
+*.webtest
+*.xaml.h
+*.pdb
+*.tmp
+*.log
+*.vspscc
+*.vssscc
+*.buildscc
+*.vsmdi
+*.webtest
+*.rdlc.data
+*.preserverd
+
+# Build results
+[Bb]in/
+[Oo]bj/
+[Dd]ist/
+
+# Packages
+packages/
+*.nupkg
+*.snupkg
+
+# Temporary files
+*.[Tt]mp
+*.[Tt]emp
+*.[Ll]og
+
+# User-specific files
+*.user
+*.userprefs
+
+# IDE-specific files
+.idea/
+.vscode/
+
+# Rider
+.idea/
+
+# DotPeek
+.dotpeek/
+
+# ReSharper
+*.resharper
+*.DotSettings.user
+
+# Project files and folders from SDKs and Tools
+.dotnet/
+.vs/
+.vspscc
+.vssscc
+.gitattributes
+.gitkeep
+
+# Local configuration files
+appsettings.Development.json # Jika Anda tidak ingin membagikan konfigurasi development lokal yang sensitif
+appsettings.Local.json       # Common pattern for local-only settings
+launchSettings.json          # Biasanya diabaikan agar setiap dev bisa punya konfigurasi launch sendiri
+# Anda MUNGKIN ingin MENYISAKAN appsettings.json agar ter-track, 
+# karena ini adalah base config untuk semua environment.
+
+# Database files
+*.mdf
+*.ldf
+*.sdf
+*.db
+
+# Test results
+TestResults/
+*.trx
+*.coverage
+*.vsix
+
+# Npm (if you have frontend in the same repo)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Mac OS files
+.DS_Store
+
+# Linux files
+*.swp
+
+# Other common ignored files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
