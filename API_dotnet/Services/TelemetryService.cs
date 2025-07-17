@@ -1,30 +1,28 @@
-// Services/TelemetryService.cs
 using API_dotnet.Data;
 using API_dotnet.Models;
+using API_dotnet.Services;
 
 namespace API_dotnet.Services
 {
     public class TelemetryService : ITelemetryService
     {
         private readonly ITelemetryRepository _repository;
+        private readonly IRabbitMQPublisher _rabbitmqPublisher;
 
-        public TelemetryService(ITelemetryRepository repository)
+        public TelemetryService(ITelemetryRepository repository, IRabbitMQPublisher rabbitmqPublisher)
         {
             _repository = repository;
+            _rabbitmqPublisher = rabbitmqPublisher;
         }
 
-        // Anda bisa menambahkan logika bisnis tambahan di sini sebelum memanggil repository
         public async Task SaveTelemetryBatchAsync(List<FMC650Data> telemetryList)
         {
-            // Contoh logika: validasi data sebelum disimpan
             if (telemetryList == null || !telemetryList.Any())
             {
                 throw new ArgumentException("Telemetry list cannot be null or empty.");
             }
-            // Filter data yang mungkin tidak valid atau duplikat (logika bisnis)
-            // telemetryList = telemetryList.Where(d => d.Latitude != 0 && d.Longitude != 0).ToList();
-
-            await _repository.SaveTelemetryBatchAsync(telemetryList);
+            await _repository.SaveTelemetryBatchAsync(telemetryList); // simpan data ke database
+            await _rabbitmqPublisher.PublishTelemetryDataAsync(telemetryList); // kirim data ke RabbitMQ
         }
 
         public async Task<List<FMC650Data>> GetAllTelemetryAsync()
@@ -54,7 +52,6 @@ namespace API_dotnet.Services
 
         public async Task<List<FMC650Data>> GetDevicePathHistoryAsync(string deviceId, DateTime startDate, DateTime endDate)
         {
-            // Contoh logika: pastikan rentang tanggal masuk akal
             if (startDate > endDate)
             {
                 throw new ArgumentException("Start date cannot be after end date.");

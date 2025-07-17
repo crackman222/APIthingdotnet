@@ -1,4 +1,3 @@
-// Services/ITelemetryService.cs
 using API_dotnet.Models;
 
 namespace API_dotnet.Services

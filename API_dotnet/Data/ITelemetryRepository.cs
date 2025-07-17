@@ -1,4 +1,3 @@
-// Data/ITelemetryRepository.cs
 using API_dotnet.Models;
 
 namespace API_dotnet.Data

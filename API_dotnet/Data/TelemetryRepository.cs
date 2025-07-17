@@ -1,8 +1,7 @@
-// Data/TelemetryRepository.cs
 using API_dotnet.Models;
 using Npgsql;
-using System.Text.Json; // Import ini untuk JsonSerializerOptions
-using Microsoft.Extensions.Configuration; // Untuk mengakses connection string
+using System.Text.Json;
+using Microsoft.Extensions.Configuration;
 
 namespace API_dotnet.Data
 {

@@ -1,4 +1,3 @@
-// Models/DeviceSummary.cs
 namespace API_dotnet.Models
 {
     public class DeviceSummary

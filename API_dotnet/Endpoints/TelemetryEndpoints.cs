@@ -1,8 +1,7 @@
-// Endpoints/TelemetryEndpoints.cs
 using API_dotnet.Models;
 using API_dotnet.Services;
 using System.Text.Json;
-using Microsoft.AspNetCore.Http.Extensions; // Untuk Request.GetDisplayUrl() jika dibutuhkan
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
@@ -12,14 +11,13 @@ namespace API_dotnet.Endpoints
     {
         public static void MapTelemetryApiEndpoints(this WebApplication app)
         {
-            // Common JSON serializer options
             var jsonOptions = new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
                 WriteIndented = true
             };
 
-            // POST: Save Batch Telemetry Data
+            // POST: Save Batch Telemetry Data from Mobile App
             app.MapPost("/telemetry", async (ITelemetryService service, HttpContext context) =>
             {
                 try
@@ -40,7 +38,7 @@ namespace API_dotnet.Endpoints
                     context.Response.StatusCode = StatusCodes.Status200OK;
                     await context.Response.WriteAsync($"Successfully saved {telemetryList.Count} telemetry records.");
                 }
-                catch (ArgumentException ex) // Tangkap ArgumentException dari service jika ada validasi
+                catch (ArgumentException ex)
                 {
                     Console.WriteLine($"Validation error: {ex.Message}");
                     context.Response.StatusCode = StatusCodes.Status400BadRequest;
@@ -109,9 +107,6 @@ namespace API_dotnet.Endpoints
                         await context.Response.WriteAsync("Invalid payload");
                         return;
                     }
-
-                    // Anda mungkin perlu cek apakah ID yang di-path sama dengan ID di body jika ada,
-                    // tapi untuk update biasanya ID di path yang jadi acuan.
                     await service.UpdateTelemetryAsync(id, fmc650Data);
 
                     context.Response.StatusCode = StatusCodes.Status200OK;
@@ -130,8 +125,6 @@ namespace API_dotnet.Endpoints
             {
                 try
                 {
-                    // Anda bisa menambahkan logika cek apakah data ada sebelum menghapus,
-                    // dan mengembalikan 404 jika tidak ditemukan.
                     await service.DeleteTelemetryAsync(id);
 
                     context.Response.StatusCode = StatusCodes.Status200OK;
@@ -241,9 +234,6 @@ namespace API_dotnet.Endpoints
                     
                     if (summary == null)
                     {
-                        // Return 200 OK with empty/default summary if no data, or 404 if specific item not found.
-                        // For summary, 200 with 0 values might be more appropriate than 404.
-                        // Let's return a default summary if no data, instead of null.
                         summary = new DeviceSummary { DeviceId = deviceId, TotalRecords = 0, AverageSpeed = 0.0 };
                     }
 

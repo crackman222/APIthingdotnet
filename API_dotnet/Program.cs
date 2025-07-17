@@ -1,38 +1,37 @@
 ﻿// Program.cs
 using API_dotnet.Data;
 using API_dotnet.Services;
-using API_dotnet.Endpoints; // Import namespace Endpoints
+using API_dotnet.Endpoints;
 using System.Text.Json;
-using System.Text.Json.Serialization; // Untuk [JsonConverter] jika dibutuhkan
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Baca connection string dari appsettings.json
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
                        ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-// Register Repository and Service for Dependency Injection
-builder.Services.AddSingleton<ITelemetryRepository>(new TelemetryRepository(builder.Configuration)); // Menggunakan Singleton karena Repository tidak menyimpan state per request
-builder.Services.AddScoped<ITelemetryService, TelemetryService>(); // Menggunakan Scoped karena Service mungkin punya logika per request
+builder.Services.AddSingleton<ITelemetryRepository>(new TelemetryRepository(builder.Configuration));
+builder.Services.AddScoped<ITelemetryService, TelemetryService>();
 
-// Tambahkan Swagger/OpenAPI (sangat direkomendasikan untuk pengembangan API)
+builder.Services.AddSingleton<IRabbitMQPublisher, RabbitMQPublisher>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection(); // comment jika tidak menggunakan HTTPS di 5001/8001
+app.Urls.Add("http://0.0.0.0:8000"); 
 
-// Map all telemetry API endpoints using the extension method
 app.MapTelemetryApiEndpoints();
-
 app.Run();
