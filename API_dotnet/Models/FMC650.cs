@@ -2,7 +2,10 @@ namespace TryConsoleApp.Models
 {
     public class FMC650Data
     {
-        public string DeviceId { get; set; } = "FMC650_001";
+        // Tambahkan baris ini:
+        public int Id { get; set; }
+
+        public string? DeviceId { get; set; }
         public DateTime Timestamp { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
